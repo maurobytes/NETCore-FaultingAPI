@@ -1,7 +1,10 @@
 ﻿@page "/fetchdata"
 
 @using Blazor_ClientApp.Data
-@inject WeatherForecastService ForecastService
+@using System.Net.Http
+@using Newtonsoft.Json
+@inject IHttpClientFactory clientFactory
+
 
 <h1>Weather forecast</h1>
 
@@ -40,7 +43,10 @@ else
     WeatherForecast[] forecasts;
 
     protected override async Task OnInitializedAsync()
-    {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    {   
+        var client = clientFactory.CreateClient();
+
+        var result = await client.GetStringAsync("http://localhost:59316/weatherforecast");
+        forecasts = JsonConvert.DeserializeObject<WeatherForecast[]>(result);
     }
 }
