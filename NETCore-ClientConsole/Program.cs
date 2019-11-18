@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Http;
 
-namespace Blazor_ClientApp
+namespace NETCore_ClientConsole
 {
     public class Program
     {
@@ -20,9 +17,10 @@ namespace Blazor_ClientApp
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureServices((hostContext, services) =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    services.AddHttpClient();
+                    services.AddHostedService<Worker>();
                 });
     }
 }
